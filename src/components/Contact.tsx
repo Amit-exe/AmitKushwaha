@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Mail, Phone, MapPin, Linkedin, Send, CheckCircle } from "lucide-react";
 import { SiX, SiGithub } from "@icons-pack/react-simple-icons";
+import emailjs from "@emailjs/browser";
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -10,13 +11,43 @@ const Contact: React.FC = () => {
     message: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setIsLoading(true);
+    setError("");
+
+    try {
+      // Replace these with your actual EmailJS service details
+      const serviceId =
+        import.meta.env.VITE_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
+      const templateId =
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
+      const publicKey =
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        },
+        publicKey
+      );
+
+      setIsSubmitted(true);
+      setFormData({ name: "", email: "", subject: "", message: "" });
+      setTimeout(() => setIsSubmitted(false), 5000);
+    } catch (err) {
+      console.error("Failed to send message:", err);
+      setError("Failed to send message. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (
@@ -113,6 +144,7 @@ const Contact: React.FC = () => {
                 <a
                   href="https://github.com/Amit-exe"
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center hover:bg-blue-600 hover:text-white transform hover:-translate-y-1 transition-all duration-300 group"
                 >
                   <SiGithub className="w-6 h-6 text-gray-600 dark:text-gray-300 group-hover:text-white" />
@@ -120,6 +152,7 @@ const Contact: React.FC = () => {
                 <a
                   href="https://www.linkedin.com/in/amit-kushwaha-sde/"
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center hover:bg-purple-600 hover:text-white transform hover:-translate-y-1 transition-all duration-300 group"
                 >
                   <Linkedin className="w-6 h-6 text-gray-600 dark:text-gray-300 group-hover:text-white" />
@@ -127,6 +160,7 @@ const Contact: React.FC = () => {
                 <a
                   href="https://x.com/ak190732"
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transform hover:-translate-y-1 transition-all duration-300 group"
                 >
                   <SiX className="w-6 h-6 text-gray-600 dark:text-gray-300 group-hover:text-white" />
@@ -147,6 +181,12 @@ const Contact: React.FC = () => {
                 <span className="text-green-700 dark:text-green-300">
                   Thank you! Your message has been sent successfully.
                 </span>
+              </div>
+            )}
+
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg flex items-center">
+                <span className="text-red-700 dark:text-red-300">{error}</span>
               </div>
             )}
 
@@ -230,10 +270,41 @@ const Contact: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center space-x-2"
+                disabled={isLoading}
+                className={`w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center space-x-2 ${
+                  isLoading ? "opacity-70 cursor-not-allowed" : ""
+                }`}
               >
-                <Send className="w-5 h-5" />
-                <span>Send Message</span>
+                {isLoading ? (
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    <span>Sending...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5" />
+                    <span>Send Message</span>
+                  </>
+                )}
               </button>
             </form>
           </div>
