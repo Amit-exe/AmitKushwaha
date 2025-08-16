@@ -75,13 +75,6 @@ const Hero: React.FC = () => {
             </span>
           </div>
 
-          <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed transition-colors duration-300">
-            Full-Stack Developer with 4+ years of hands-on experience building
-            and deploying scalable web and mobile applications. Proficient in
-            modern technologies and passionate about creating exceptional
-            digital experiences.
-          </p>
-
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <button
               onClick={() => {
