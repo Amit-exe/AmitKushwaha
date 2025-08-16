@@ -11,11 +11,11 @@ import {
   SiNodedotjs,
   SiPython,
   SiExpress,
-  SiDjango,
+  SiUml,
   SiPostgresql,
   SiMongodb,
-  SiFirebase,
-  SiDocker,
+  SiInternetcomputer,
+  SiAxios,
   SiGithub,
   SiLinux,
   SiXcode,
@@ -43,10 +43,6 @@ const Skills: React.FC = () => {
           name: "CSS",
           icon: <SiTailwindcss className="w-6 h-6 text-blue-600" />,
         },
-        {
-          name: "Flutter",
-          icon: <SiFlutter className="w-6 h-6 text-blue-400" />,
-        },
       ],
     },
     {
@@ -69,8 +65,10 @@ const Skills: React.FC = () => {
           ),
         },
         {
-          name: "Django",
-          icon: <SiDjango className="w-6 h-6 text-green-700" />,
+          name: "RestAPI",
+          icon: (
+            <SiAxios className="w-6 h-6 text-gray-800 dark:text-gray-200" />
+          ),
         },
       ],
     },
@@ -87,10 +85,6 @@ const Skills: React.FC = () => {
           name: "MongoDB",
           icon: <SiMongodb className="w-6 h-6 text-green-500" />,
         },
-        {
-          name: "Firebase",
-          icon: <SiFirebase className="w-6 h-6 text-yellow-500" />,
-        },
       ],
     },
     {
@@ -98,10 +92,6 @@ const Skills: React.FC = () => {
       icon: Cloud,
       color: "from-purple-600 to-indigo-600",
       skills: [
-        {
-          name: "Docker",
-          icon: <SiDocker className="w-6 h-6 text-blue-400" />,
-        },
         {
           name: "Git/GitHub",
           icon: (
@@ -111,6 +101,10 @@ const Skills: React.FC = () => {
         {
           name: "Linux",
           icon: <SiLinux className="w-6 h-6 text-yellow-600" />,
+        },
+        {
+          name: "Computer Network",
+          icon: <SiInternetcomputer className="w-6 h-6 text-yellow-600" />,
         },
       ],
     },
@@ -145,6 +139,10 @@ const Skills: React.FC = () => {
         {
           name: "Google Analytics",
           icon: <SiGoogleanalytics className="w-6 h-6 text-blue-600" />,
+        },
+        {
+          name: "UML Diagrams",
+          icon: <SiUml className="w-6 h-6 text-blue-600" />,
         },
       ],
     },
